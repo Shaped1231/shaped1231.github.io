@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+	<meta name="generator" content="Hugo 0.111.3">
+    <title>Free Web Hosting with PHP and MySQL - InfinityFree</title>
+
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script data-query="key=573ef71ea96b1f390aab4e94b6d786ecb11f892a69d8530cf3f02e605cd7ff43" id="LUedCsLkrHNZ" data-sdk="p/1.0.7" data-cfasync="false" src="https://html-load.com/loader.min.js" charset="UTF-8" data="irrron6o4fhugojo4o2o4hch8hto8jhe2h4h8oso7o4ojfogh8h4oj5h4h4fo7o4hefogovh4oso7o4fh4oifuhyojojo7o4he52h4ocoso7o42h4oj3s2hyh4ojo2uuhto8ochto8htfogoc2h4h4opojfogh8h4o7o4qo4kh9" onerror="let e=document.getElementById('LUedCsLkrHNZ'),t=document.createElement('script');for(let r=0;r<e.attributes.length;r++)t.setAttribute(e.attributes[r].name,e.attributes[r].value);let s=new window.URL(e.src),a=['html-load.com','fb.html-load.com','css-load.com','fb.css-load.com','content-loader.com','fb.content-loader.com','07c225f3.online'];if(void 0===window.as_retry&&(window.as_retry=0),window.as_retry>=a.length){setInterval(()=>document.querySelectorAll('link,style').forEach((e)=>e.remove()),100);let o=atob('RmFpbGVkIHRvIGxvYWQgd2Vic2l0ZSBwcm9wZXJseSBzaW5jZSA')+a[0]+atob('IGlzIGJsb2NrZWQuIFBsZWFzZSBhbGxvdyA')+a[0];throw alert(o),fetch('https://error-report.com/report?type=loader_pro&url='+btoa(location.href)+'&error='+btoa(o),{method:'POST'}).then(e=>e.text()).then(e=>{let r=document.createElement('iframe');r.src='https://report.error-report.com/modal?eventId='+e+'&error='+btoa(o)+'&domain='+a[0],r.setAttribute('style','width: 100vw; height: 100vh; z-index: 2147483647; position: fixed; left: 0; top: 0;'),document.body.appendChild(r);let f=e=>{'close-error-report'===e.data&&(r.remove(),window.removeEventListener('message',f))};window.addEventListener('message',f)}).catch(o=>{let l=navigator.language.toLowerCase().startsWith('ko')?decodeURIComponent(escape(atob('7J6Y66q765CcIOyVoOuTnOu4lOuhnSDtlYTthLDroZwg7Ju57Y6Y7J207KeAIOuhnOuUqeyXkCDsi6TtjKjtlZjsmIDsirXri4jri6QuIOyVoOuTnOu4lOuhneydhCDruYTtmZzshLHtmZTtlZwg7ZuEIOybueyCrOydtO2KuOulvCDsnbTsmqntlbTso7zshLjsmpQuICjsnpDshLjtlZwg64K07Jqp7J2AICftmZXsnbgnIOuyhO2KvOydhCDriIzrn6wg7ZmV7J247ZW07KO87IS47JqUKQ'))):atob('VGhpcyBwYWdlIGNvdWxkIG5vdCBiZSBsb2FkZWQgcHJvcGVybHkgZHVlIHRvIGluY29ycmVjdCAvIGJhZCBmaWx0ZXJpbmcgcnVsZShzKSBvZiBhZGJsb2NrZXJzIGluIHVzZS4gUGxlYXNlIGRpc2FibGUgYWxsIGFkYmxvY2tlcnMgdG8gY29udGludWUgdXNpbmcgdGhlIHdlYnNpdGUuIChjbGljayBPSyBpZiB5b3UnZCBsaWtlIHRvIGxlYXJuIG1vcmUp');confirm(l)?location.href='https://report.error-report.com/modal?eventId=&error='+btoa(o.toString())+'&domain='+a[0]:location.reload()}),Error(o)}s.host=a[window.as_retry++],t.setAttribute('src',s.href),e.setAttribute('id', e.getAttribute('id')+'_'),e.parentNode.insertBefore(t,e),e.remove();"></script>
+        <noscript style="width: 100%; text-align: center; font-size: 20px; display: block; margin-top: 50px;">Please enable JavaScript in your browser to load website properly.<br /><br />Click <a href="https://www.enable-javascript.com/" target="_blank"><b>here</b></a> if you'd like to learn how.</noscript>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400">
+
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+    <meta property="og:title" content="Free Web Hosting with PHP and MySQL">
+    <meta property="twitter:title" content="Free Web Hosting with PHP and MySQL">
+    <meta property="og:locale" content="en">
+    <meta name="description" content="Completely free website hosting with PHP, MySQL and no ads on your site!">
+    <meta property="og:description" content="Completely free website hosting with PHP, MySQL and no ads on your site!">
+    <link rel="canonical" href="https://www.infinityfree.com/">
+    <meta property="og:url" content="https://www.infinityfree.com/">
+    <meta property="og:site_name" content="InfinityFree">
+    <meta property="og:image" content="https://www.infinityfree.com/images/home-preview.png">
+    <meta property="twitter:image" content="https://www.infinityfree.com/images/home-preview.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="text/javascript" src="/js/choice.min.82fc683e016c8a2f48dd2f9006191928bdfdf472c25b3b60f0ff6731bbafaa9d.js"></script>
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVH0G3RGPP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){window.dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-GVH0G3RGPP', {'send_page_view': false});
+        gtag('event', 'page_view', {'ad_provider': 'adsense'});
+        gtag('event', 'ad_page_view', {'ad_provider': 'adsense'});
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9174038688046015" crossorigin="anonymous"></script>
+    <script>window.rum = {key: 't8v8r6pd'};</script>
+    <script src="https://cdn.perfops.net/rom3/rom3.min.js" type="text/javascript" defer async></script>
+</head>
+<body>
+            <div class="sticky-header">
+                
+<ins class="adsbygoogle"
+     style="display:block; height: 90px"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="6926976164"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+                <div class="sticky-border-bar"></div>
+
+                <div class="toggle-container">
+                    <div class="close-toggle">
+                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M0.244078 5.75568C-0.0813592 5.43024 -0.0813592 4.9026 0.244078 4.57717L4.41074 0.410499C4.56702 0.254219 4.77899 0.166422 5 0.166422C5.22101 0.166422 5.43298 0.254219 5.58926 0.410499L9.75592 4.57717C10.0814 4.9026 10.0814 5.43024 9.75592 5.75568C9.43049 6.08112 8.90285 6.08112 8.57741 5.75568L5 2.17827L1.42259 5.75568C1.09715 6.08112 0.569515 6.08112 0.244078 5.75568Z"
+                                  fill="#737387"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+    <div class="page-content">
+
+    <header>
+        <nav class="navbar navbar-expand-xl bg-light">
+            <div class="container fixed-container">
+                <a class="navbar-brand" href="/">
+                    <picture>
+                        <img class="img-fluid" data-src="/images/logo-purple.png" src="/images/logo-purple.png" alt="Free Web Hosting with PHP and MySQL" title="Free Web Hosting with PHP and MySQL">
+                    </picture>
+                    InfinityFree
+                </a>
+
+                <div class="d-flex justify-content-between hide-desktop order-xl-last">
+                    <a href="https://dash.infinityfree.com/login" class="btn white">Login</a>
+                    <a href="https://dash.infinityfree.com/register" class="btn purple track-button" data-btn-ref="mainMenuRegister">
+                        Register
+                        <img class="img-fluid" src="/images/arrow.png" alt="->">
+                    </a>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Free Hosting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/premium/">Premium Hosting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/website-builder/">Website Builder</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://forum.infinityfree.com/docs">Knowledge Base</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://forum.infinityfree.com">Support Forum</a>
+                        </li>
+                    </ul>
+                    <div class="show-mobile">
+                        <div class="d-flex justify-content-between block_me">
+                            <a href="https://dash.infinityfree.com/login" class="btn white mb-2">Login</a>
+                            <a href="https://dash.infinityfree.com/register" class="btn purple mb-2 track-button" data-btn-ref="mainMenuRegister">
+                                Sign Up
+                                <img class="img-fluid" src="/images/arrow.png" alt="->">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-xxl d-none d-xxl-block pt-5">
+                <div class="siderail ms-auto text-end">
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="2765393353"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            </div>
+            <div class="col-12 col-xxl-auto">
+                <div class="container">
+
+<section class="hero">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Free Website Hosting</h1>
+            <div class="d-flex justify-content-center usp">
+                <p>PHP & MySQL | No ads on your site | Over 500,000 websites</p>
+            </div>
+            <a href="https://dash.infinityfree.com/register" class="btn purple track-button" data-btn-ref="landingHeroRegister">
+                Register Now
+                <img class="img-fluid" src="/images/arrow.png" alt="->">
+            </a>
+        </div>
+    </div>
+</section>
+
+
+    <div class="row">
+        <div class="col-12">
+            
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="8977136814"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+    </div>
+
+
+
+<section class="usp">
+    <div class="row">
+        <div class="col-md-12 text-center spacer">
+            <h1>Free Website Hosting for over 12 years</h1>
+        </div>
+    </div>
+    <div class="row gx-5">
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/free-hosting.png" src="/images/free-hosting.png" alt="Fastest Free Hosting">
+                </picture>
+                <h3>Fastest Free Hosting</h3>
+                <p>
+                    Our hosting was independently tested and found to be the fastest free hosting in the world.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/uptime.png" src="/images/uptime.png" alt="Uptime">
+                </picture>
+                <h3>99.9% Uptime</h3>
+                <p>
+                    Uptime is our main priority, which is why we can proudly say we offer 99.9% uptime.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/unlimited-hosting.png"
+                        src="/images/unlimited-hosting.png" alt="Unlimited Hosting">
+                </picture>
+                <h3>Unlimited Hosting</h3>
+                <p>
+                    InfinityFree is website hosting with no time limit, and no limit on the number of websites you can host.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/free.png" src="/images/free.png" alt="Free Hosting">
+                </picture>
+                <h3>Completely Free</h3>
+                <p>
+                    InfinityFree is completely free, no credit card required and no hidden fees.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/no-ads.png" src="/images/no-ads.png" alt="No Ads">
+                </picture>
+                <h3>No Ads on Your Site</h3>
+                <p>
+                    Your website is your own, we will never place advertisements on your website.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="wrapper">
+                <picture>
+                    <img class="img-fluid" data-src="/images/domain.png" src="/images/domain.png" alt="Host Any Domain">
+                </picture>
+                <h3>Host Any Domain</h3>
+                <p>
+                    Bring your own domain name or pick a free subdomain from 25+ extensions.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <div class="row">
+        <div class="col-12">
+            
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="5229463496"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+    </div>
+
+
+
+<section class="cta">
+    <div class="row gx-5">
+        <div class="col-lg-7">
+            <div class="content_wrapper mb-5 mb-lg-0">
+                <h2>
+                    <span class="subtitle">
+                        What you get with InfinityFree
+                    </span>
+                    Free Hosting Features
+                </h2>
+                <p>
+                    InfinityFree includes everything you could possibly need to build your website,
+                    no matter what kind of website you are working on.
+                </p>
+                <ul class="bullets row">
+                    <li class="col">5 GB Disk Space</li>
+                    <li class="col">Unlimited Bandwidth</li>
+                    <li class="col">PHP 8.3</li>
+                    <li class="col">MySQL 8.0 / MariaDB 10.6</li>
+                    <li class="col">Free Subdomain Names</li>
+                    <li class="col">Bring Your Own Domain</li>
+                    <li class="col">400 MySQL Databases</li>
+                    <li class="col">Free DNS Service</li>
+                    <li class="col">Free SSL Certificates</li>
+                    <li class="col">Full .htaccess Support</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-5 order-lg-first">
+            <div class="form_wrapper mb-5 mb-lg-0">
+                <h2>Host WordPress for free!</h2>
+                <p>
+                    With full support for PHP and MySQL, InfinityFree is a great place to host WordPress.
+                    Get a subdomain for free or bring your own domain name to build your WordPress site on.
+                    Install WordPress quickly and easily with the Softaculous Apps Installer and use it to keep
+                    WordPress up to date. Enjoy the full control over your own WordPress install and use any
+                    plugin or theme you want.
+                </p>
+                <a href="https://dash.infinityfree.com/register" class="btn blue track-button" data-btn-ref="wordpressRegister">Register Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <div class="row">
+        <div class="col-12">
+            
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="7472483456"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+    </div>
+
+
+
+<section class="soft">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content_wrapper">
+                <div class="row gx-5">
+                    <div class="col-md-6">
+                        <h2>
+                            <span class="subtitle">Install 400+ applications with a few clicks</span>
+                            Softaculous Installer</h2>
+                        <p>
+                            Use the Softaculous automatic script installer to install one of over 400 scripts,
+                            applications and CMS like WordPress with only a few clicks, and automatically keep them
+                            up to date.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="row bullets">
+                            <li class="row">Setting up software, like WordPress, has never been easier</li>
+                            <li class="row">Choose from over 400 available scripts</li>
+                            <li class="row">The easiest way to keep all your software up to date</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <div class="row">
+        <div class="col-12">
+            
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="5967830096"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+    </div>
+
+
+
+<section class="soft">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="content_wrapper">
+                <div class="row gx-5">
+                    <div class="col-md-6">
+                        <ul class="row bullets">
+                            <li class="row">Easily build beautiful websites without code</li>
+                            <li class="row">Build any website, from a landing page to an online store</li>
+                            <li class="row">200+ templates Available, with full customizability</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="text-end">
+                            <span class="subtitle">Easily build a website without code</span>
+                            Site.pro Website Builder</h2>
+                        <p>
+                            Use the Site.pro website builder, included with InfinityFree,
+                            to build anything from simple landing pages to fully featured online stores.
+                            All fully SEO optimized, completely mobile friendly and available in many languages.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="faq">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                <span class="subtitle">Still have doubts? </span>
+                FAQ - Common questions before registration
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Is your hosting really free?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Yes, you can host your website without having to pay. Ever.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            How long does it takes to setup my account?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Forget about waiting lists, InfinityFree accounts are automatically created in minutes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            For how long is the free hosting valid?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                InfinityFree is free forever! There is no time limit for free hosting.
+                                You can sign up whenever you want and use it for as long as you want!
+                                Some people have been hosting their websites with us for years,
+                                without ever paying anything!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Why do you provide free hosting?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                InfinityFree provides free hosting, because we believe everyone should have the
+                                opportunity to build a presence online. Regardless of who you are, where you are
+                                and what your budget is, we believe you should be able to have a website.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Can I get a free subdomain?
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Yes, we provide free subdomains, like yourname.great-site.net and yourname.rf.gd, for you to launch your website on.
+                                So you can build a website completely for free!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSix">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Can I host my own domains?
+                        </button>
+                    </h2>
+                    <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Yes, you can host your own domain name on InfinityFree.
+                                We don't provide domain registration services ourselves,
+                                but can easily use your own domain registered elsewhere with us.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingSeven">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                            Will you put ads on my site?
+                        </button>
+                    </h2>
+                    <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Never! We earn enough using the ads on our main site and control panel to cover
+                                the costs of free hosting.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingEight">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                            Is InfinityFree a demo, trial or sample for premium hosting?
+                        </button>
+                    </h2>
+                    <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>
+                                Absolutely not! InfinityFree is fully featured, completely free website hosting.
+                                We provide promotional offers for alternative, premium services for people
+                                looking for more, but their services are very different. InfinityFree is not a
+                                representation of these offers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <div class="row">
+        <div class="col-12">
+            
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="6106612656"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        </div>
+    </div>
+
+
+                    <section class="payoff">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h2>Forget the stereotypes of free hosting!</h2>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="col-xxl d-none d-xxl-block pt-5">
+                <div class="siderail">
+<ins class="adsbygoogle"
+     style="display:block" data-ad-format="auto"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="8269001479"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h2>About Us</h2>
+                    <p>
+                        InfinityFree is an independent free hosting initiative, dedicated to providing reliable free
+                        hosting services.
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <h2>Support</h2>
+                    <ul>
+                        <li><a href="https://forum.infinityfree.com/docs">Knowledge Base</a></li>
+                        <li><a href="https://forum.infinityfree.com/">Support Forum</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h2>Our Partners</h2>
+                    <ul>
+                        <li>
+                            <a href="/go/ifastnet" target="_blank" rel="nofollow" class="track-button" data-btn-ref="footerPartnerIfastnet">iFastNet Premium Hosting</a>
+                        </li>
+                        <li>
+                            <a href="/go/sitepro" target="_blank" rel="nofollow" class="track-button" data-btn-ref="footerPartnerSitePro">Site.Pro Website Builder</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h2>Company</h2>
+                    <ul>
+                        <li><a href="/contact/">Contact Us</a></li>
+                        <li><a href="/terms/">Terms of Service</a></li>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/responsible-disclosure/">Responsible Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <section class="bottom">
+        <div class="bottom_cta">
+            <a href="https://dash.infinityfree.com/register" class="btn purple track-button" data-btn-ref="footerSignUp">
+                Sign Up Now
+                <img class="img-fluid" src="/images/arrow.png" alt="->">
+            </a>
+        </div>
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-md-6 text-start">© 2025 InfinityFree. All rights reserved.</div>
+                <div class="col-md-6 text-end">
+                    Powered by:
+                    <a href="/go/ifastnet" title="iFastNet Premium Hosting" rel="nofollow" class="track-button" data-btn-ref="poweredByLink">
+                        iFastNet Premium Hosting
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+            </div>
+            <div class="sticky-footer">
+                <div class="sticky-border-bar"></div>
+
+                <div class="toggle-container">
+                    <div class="close-toggle">
+                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M9.75592 0.410826C10.0814 0.736263 10.0814 1.2639 9.75592 1.58934L5.58926 5.756C5.43298 5.91228 5.22101 6.00008 5 6.00008C4.77899 6.00008 4.56702 5.91228 4.41074 5.756L0.244078 1.58934C-0.081359 1.2639 -0.0813589 0.736262 0.244078 0.410825C0.569514 0.0853884 1.09715 0.0853884 1.42259 0.410825L5 3.98824L8.57741 0.410826C8.90285 0.0853888 9.43049 0.0853888 9.75592 0.410826Z"
+                                  fill="#737387"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+<ins class="adsbygoogle"
+     style="display:block; height: 90px"
+     data-full-width-responsive="true"
+     data-ad-client="ca-pub-9174038688046015"
+     data-ad-slot="5613894494"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            </div>
+    <script type="text/javascript" src="/js/bundle.min.3929bdac9880f12b970af9fa1bfa4664192bd23206c842cd8d344e5f2cddff07.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"5984b439ece245b081c6346fc59837d2","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
