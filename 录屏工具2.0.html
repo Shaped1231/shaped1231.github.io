@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器录屏工具</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+        body{background:#121520;color:#fff;padding:20px;min-height:100vh}
+        .container{max-width:900px;margin:0 auto}
+        .title{font-size:28px;text-align:center;margin-bottom:24px}
+        .control-panel{background:#1e2435;border-radius:16px;padding:20px;margin-bottom:20px}
+        .row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+        button{padding:12px 24px;border:none;border-radius:10px;font-size:16px;cursor:pointer;font-weight:bold}
+        #startBtn{background:#2563eb;color:#fff}
+        #stopBtn{background:#dc2626;color:#fff;display:none}
+        select{padding:10px;border-radius:8px;background:#2c344a;color:#fff;border:1px solid #444}
+        .tip{color:#a0aec0;margin-top:8px;font-size:14px}
+        .rec-status{margin:12px 0;font-size:18px}
+        .record-list{margin-top:20px;background:#1e2435;border-radius:16px;padding:20px}
+        .empty-tip{text-align:center;color:#94a3b8;font-size:32px;padding:40px 0}
+        .warn-box{background:#272e42;padding:20px;border-radius:12px;text-align:center;margin:16px 0}
+        .video-item{background:#2c344a;padding:14px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+        .download-btn{background:#10b981;color:white}
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="title">网页录屏工具</h1>
+    <div class="control-panel">
+        <div class="row">
+            <button id="startBtn">开始录制</button>
+            <button id="stopBtn">停止录制</button>
+            <select id="fpsSelect">
+                <option value="15">15帧</option>
+                <option value="24">24帧</option>
+                <option value="30" selected>30帧</option>
+            </select>
+            <label><input type="checkbox" id="micCheck">麦克风</label>
+            <label><input type="checkbox" id="audioCheck">系统音频</label>
+        </div>
+        <div class="rec-status" id="status">待机</div>
+	<p>使用注意事项</p>
+	<p>1. 推荐使用 **Chrome / Edge 浏览器**，Firefox 部分支持，Safari 兼容性很差</p>
+	<p>2. 不要点开始立刻点停止！**录制至少 2 秒**，否则采集不到视频帧就会提示「录制的视频为空」</p>
+	<p>3. 勾选系统音频时，部分笔记本需要在音频设置里启用立体声混音才能录制电脑内部声音</p>
+    </div>
+
+    <div class="record-list">
+        <div class="empty-tip" id="emptyTip">还没有录制记录，录制第一段试试</div>
+        <div class="warn-box" id="warnTip" style="display:none">录制的视频为空，未保存</div>
+        <div id="videoList"></div>
+    </div>
+    <div style="text-align:center;margin-top:20px;color:#94a3b8">数据仅在浏览器内处理，不会上传 · 输出为WebM</div>
+</div>
+
+<script>
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const statusEl = document.getElementById('status');
+    const emptyTip = document.getElementById('emptyTip');
+    const warnTip = document.getElementById('warnTip');
+    const videoList = document.getElementById('videoList');
+    const fpsSelect = document.getElementById('fpsSelect');
+    const micCheck = document.getElementById('micCheck');
+    const audioCheck = document.getElementById('audioCheck');
+
+    let mediaStream = null;
+    let mediaRecorder = null;
+    let chunks = [];
+    let timer = null;
+    let seconds = 0;
+
+    // 生成下载记录
+    function addVideoRecord(blob) {
+        // 修复：判断视频blob是否为空
+        if (!blob || blob.size <= 0) {
+            warnTip.style.display = 'block';
+            setTimeout(()=>warnTip.style.display='none', 3000);
+            return false;
+        }
+        warnTip.style.display = 'none';
+        emptyTip.style.display = 'none';
+        const url = URL.createObjectURL(blob);
+        const item = document.createElement('div');
+        item.className = 'video-item';
+        item.innerHTML = `
+            <span>录制视频 ${new Date().toLocaleString()} (${(blob.size/1024/1024).toFixed(2)}MB)</span>
+            <a class="download-btn" href="${url}" download="screen_${Date.now()}.webm">下载</a>
+        `;
+        videoList.appendChild(item);
+        return true;
+    }
+
+    // 计时
+    function resetTimer(){
+        clearInterval(timer);
+        seconds=0;
+    }
+    function startTimer(){
+        resetTimer();
+        timer = setInterval(()=>{
+            seconds++;
+            const m = String(Math.floor(seconds/60)).padStart(2,'0');
+            const s = String(seconds%60).padStart(2,'0');
+            statusEl.textContent = `录制中 ${m}:${s}`;
+        },1000);
+    }
+
+    startBtn.onclick = async ()=>{
+        try {
+            const fps = Number(fpsSelect.value);
+            const displayMediaOptions = {
+                video:{
+                    cursor:"always",
+                    frameRate:{ideal:fps}
+                },
+                audio: audioCheck.checked
+            };
+            mediaStream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+
+            // 合并麦克风音频
+            if(micCheck.checked){
+                const micStream = await navigator.mediaDevices.getUserMedia({audio:true});
+                const audioTracks = micStream.getAudioTracks();
+                mediaStream.addTrack(audioTracks[0]);
+            }
+
+            chunks = [];
+            // 优先使用webm编码
+            const options = {mimeType: 'video/webm;codecs=vp9,opus'};
+            if(!MediaRecorder.isTypeSupported(options.mimeType)){
+                options.mimeType = 'video/webm';
+            }
+            mediaRecorder = new MediaRecorder(mediaStream, options);
+
+            mediaRecorder.ondataavailable = (e)=>{
+                if(e.data && e.data.size>0) chunks.push(e.data);
+            }
+            mediaRecorder.onstop = ()=>{
+                resetTimer();
+                statusEl.textContent = "录制完成";
+                const blob = new Blob(chunks, {type:'video/webm'});
+                addVideoRecord(blob);
+                // 释放流
+                mediaStream.getTracks().forEach(t=>t.stop());
+            }
+            mediaRecorder.start();
+            startTimer();
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'block';
+            // 用户关闭屏幕共享弹窗自动停止
+            mediaStream.getVideoTracks()[0].onended = ()=>{
+                mediaRecorder.stop();
+            }
+        }catch(err){
+            statusEl.textContent = "启动失败："+err.message;
+            console.error(err);
+        }
+    }
+
+    stopBtn.onclick = ()=>{
+        if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+            mediaRecorder.stop();
+        }
+        startBtn.style.display = 'block';
+        stopBtn.style.display = 'none';
+    }
+</script>
+</body>
+</html>
