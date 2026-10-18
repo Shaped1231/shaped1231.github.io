@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>屏幕录制 · Screen Recorder</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='3' fill='%231c2438'/%3E%3Ccircle cx='12' cy='12' r='4.5' fill='%23ff4d5e'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#0e1320;
+  --panel:#171e2e;
+  --panel-2:#1d2638;
+  --line:#2a3550;
+  --text:#e9edf6;
+  --muted:#93a0b8;
+  --accent:#3fd0a6;       /* primary / start */
+  --accent-strong:#2bbd92;
+  --record:#ff4d5e;        /* recording */
+  --record-soft:rgba(255,77,94,.12);
+  --amber:#f5b34a;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(1100px 500px at 78% -8%, rgba(63,208,166,.10), transparent 60%),
+    radial-gradient(900px 480px at 8% 110%, rgba(245,179,74,.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:28px 18px 60px}
+
+/* header */
+header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.logo{
+  width:46px;height:46px;border-radius:12px;flex:none;
+  display:grid;place-items:center;
+  background:linear-gradient(150deg,#253150,#1b2437);
+  border:1px solid var(--line);
+}
+.logo svg{width:24px;height:24px}
+.brand h1{font-size:20px;margin:0;letter-spacing:.2px}
+.brand p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+
+/* panel */
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.preview{
+  position:relative;
+  aspect-ratio:16/9;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(63,208,166,.06), transparent 70%),
+    repeating-linear-gradient(45deg,#121a2b 0 22px,#101729 22px 44px);
+  display:grid;place-items:center;
+}
+.preview video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;background:#0a0f1c;
+}
+.placeholder{
+  text-align:center;color:var(--muted);padding:20px;
+}
+.placeholder .rec-icon{width:56px;height:56px;margin:0 auto 14px;border-radius:50%;
+  display:grid;place-items:center;background:rgba(255,77,94,.10);border:1px solid rgba(255,77,94,.28)}
+.placeholder .rec-icon svg{width:24px;height:24px}
+.placeholder b{display:block;font-size:16px;color:var(--text);margin-bottom:4px}
+.placeholder span{font-size:13px}
+
+/* floating status while recording */
+.rec-badge{
+  position:absolute;top:14px;left:14px;display:none;align-items:center;gap:8px;
+  background:rgba(12,16,28,.72);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,77,94,.5);color:#fff;
+  border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;
+}
+.rec-badge .dot{width:9px;height:9px;border-radius:50%;background:var(--record);
+  animation:pulse 1.3s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.8)}}
+.timer-badge{
+  position:absolute;top:14px;right:14px;display:none;align-items:center;gap:8px;
+  background:rgba(12,16,28,.72);backdrop-filter:blur(6px);
+  border:1px solid var(--line);color:#fff;
+  border-radius:999px;padding:7px 14px;font-size:14px;font-variant-numeric:tabular-nums;
+}
+.timer-badge svg{width:14px;height:14px;color:var(--accent)}
+
+/* controls */
+.controls{padding:18px 18px 16px}
+.row-actions{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--line);background:var(--panel-2);color:var(--text);
+  border-radius:12px;padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:9px;transition:.18s;
+  font-family:inherit;min-height:46px;
+}
+.btn:hover{border-color:var(--accent);color:#fff}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.primary{
+  background:var(--accent);color:#07130f;border-color:var(--accent);
+}
+.btn.primary:hover{background:var(--accent-strong)}
+.btn.record{background:var(--record);color:#fff;border-color:var(--record)}
+.btn.record:hover{background:#ff6271}
+.btn.record.stop{background:var(--panel-2);color:#fff;border-color:var(--record)}
+.btn.record.stop .sq{width:13px;height:13px;border-radius:3px;background:var(--record)}
+
+/* settings */
+.settings{
+  margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;justify-content:center;
+  font-size:13.5px;color:var(--muted);
+}
+.set-item{display:flex;align-items:center;gap:8px;min-height:44px}
+.set-item label{display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--text)}
+.set-item label:hover{color:#fff}
+.switch{position:relative;width:38px;height:22px;flex:none}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.switch .track{position:absolute;inset:0;border-radius:999px;background:#333f5c;transition:.2s}
+.switch input:checked + .track{background:var(--accent)}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.switch input:checked + .track::after{left:19px}
+select{
+  background:var(--panel-2);color:var(--text);border:1px solid var(--line);
+  border-radius:9px;padding:8px 10px;font-size:13.5px;font-family:inherit;cursor:pointer;min-height:40px;
+}
+select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* result bar */
+.result{display:none;margin-top:14px;padding:13px 16px;border:1px solid var(--accent);
+  background:rgba(63,208,166,.08);border-radius:12px;align-items:center;gap:14px;flex-wrap:wrap}
+.result .info{flex:1;min-width:200px;font-size:13.5px}
+.result .info b{color:var(--accent)}
+.result .info .meta{color:var(--muted);font-size:12.5px;margin-top:2px}
+.result .actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn.small{padding:9px 15px;font-size:13.5px;min-height:40px;border-radius:10px}
+.btn.small svg{width:16px;height:16px}
+
+/* history */
+.history{margin-top:26px}
+.history h2{font-size:16px;margin:0 0 4px;display:flex;align-items:center;gap:9px}
+.history h2 svg{width:20px;height:20px;color:var(--accent)}
+.history .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+.hlist{display:flex;flex-direction:column;gap:10px}
+.hrow{display:flex;align-items:center;gap:14px;padding:12px 15px;background:var(--panel);
+  border:1px solid var(--line);border-radius:12px}
+.hrow .thumb{width:120px;height:68px;border-radius:8px;flex:none;object-fit:cover;background:#0a0f1c}
+.hrow .meta{flex:1;min-width:0}
+.hrow .meta .name{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hrow .meta .dims{font-size:12.5px;color:var(--muted);margin-top:2px}
+.hrow .dlink{flex:none}
+.hrow .dlink a.btn.small{text-decoration:none}
+.empty{color:var(--muted);font-size:13.5px;padding:18px;text-align:center;border:1px dashed var(--line);border-radius:12px}
+
+footer{margin-top:34px;text-align:center;font-size:12px;color:var(--muted);opacity:.8}
+footer b{color:var(--text)}
+
+/* toast */
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:#232c42;color:#fff;border:1px solid var(--line);padding:11px 18px;border-radius:12px;
+  font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;box-shadow:var(--shadow);max-width:88vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  .row-actions{gap:12px}
+  .btn{padding:11px 16px;font-size:14px}
+  .settings{justify-content:flex-start}
+  .hrow .thumb{width:92px;height:56px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" fill="#253150"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="#3fd0a6" stroke-width="1.4"/><circle cx="12" cy="12" r="4.2" fill="#ff4d5e"/></svg>
+    </div>
+    <div class="brand">
+      <h1>屏幕录制</h1>
+      <p>浏览器本地录屏，无需安装，画面存储在你的电脑</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="preview" id="preview">
+      <video id="video" muted autoplay playsinline style="display:none"></video>
+      <div class="placeholder" id="placeholder">
+        <div class="rec-icon">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#ff4d5e"/></svg>
+        </div>
+        <b>准备就绪</b>
+        <span>点击「开始录制」，选择要录制的屏幕、窗口或浏览器标签页</span>
+      </div>
+      <div class="rec-badge" id="recBadge"><span class="dot"></span>录制中</div>
+      <div class="timer-badge" id="timerBadge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg>
+        <span id="timerText">00:00</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="row-actions">
+        <button class="btn primary" id="btnStart" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l14 7-14 7z"/></svg>
+          开始录制
+        </button>
+        <button class="btn record" id="btnStop" type="button" disabled style="display:none">
+          <span class="sq" style="width:13px;height:13px;border-radius:3px;background:var(--record);display:inline-block"></span>
+          停止录制
+        </button>
+        <button class="btn" id="btnPreview" type="button" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          预览
+        </button>
+      </div>
+
+      <div class="settings">
+        <div class="set-item">
+          <label>
+            <span class="switch"><input type="checkbox" id="sysAudio" checked><span class="track"></span></span>
+            系统声音
+          </label>
+        </div>
+        <div class="set-item">
+          <label>
+            <span class="switch"><input type="checkbox" id="micAudio" checked><span class="track"></span></span>
+            麦克风
+          </label>
+        </div>
+        <div class="set-item">
+          <label for="fps">帧率</label>
+          <select id="fps">
+            <option value="30">30 fps</option>
+            <option value="60">60 fps</option>
+            <option value="24">24 fps</option>
+            <option value="15">15 fps</option>
+          </select>
+        </div>
+        <div class="set-item">
+          <label for="quality">画质</label>
+          <select id="quality">
+            <option value="high" selected>高清</option>
+            <option value="medium">均衡</option>
+            <option value="low">流畅</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result" id="result">
+        <div class="info">
+          <b id="resName">录制完成</b>
+          <div class="meta" id="resMeta">—</div>
+        </div>
+        <div class="actions">
+          <button class="btn small primary" id="btnDownload" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v3h16v-3"/></svg>
+            下载视频
+          </button>
+          <button class="btn small" id="btnNew" type="button">再录一段</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="history">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h5l7 18h6l-7-18H9"/><path d="M3 3h18"/></svg>
+      录制记录
+    </h2>
+    <p class="sub">本次打开页面后录制的片段，可直接重新下载</p>
+    <div class="hlist" id="hlist">
+      <div class="empty">还没有录制记录，录制第一段试试</div>
+    </div>
+  </section>
+
+  <footer>本地录屏 · 数据仅在浏览器内处理，不会上传 · 输出为 <b>WebM</b> 格式</footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  const $ = (id)=>document.getElementById(id);
+  const video = $('video'), placeholder = $('placeholder');
+  const btnStart = $('btnStart'), btnStop = $('btnStop'), btnPreview = $('btnPreview');
+  const recBadge = $('recBadge'), timerBadge = $('timerBadge'), timerText = $('timerText');
+  const result = $('result'), resName = $('resName'), resMeta = $('resMeta');
+  const btnDownload = $('btnDownload'), btnNew = $('btnNew'), hlist = $('hlist');
+  const sysAudio = $('sysAudio'), micAudio = $('micAudio');
+
+  let stream=null, recorder=null, chunks=[], recStart=0, timerInt=null;
+  let lastBlob=null, lastMeta=null, seq=0;
+  const history=[];
+
+  function toast(msg){
+    const t=$('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2600);
+  }
+
+  function fmtTime(ms){
+    const s=Math.floor(ms/1000), m=Math.floor(s/60), h=Math.floor(m/60);
+    const pad=n=>String(n).padStart(2,'0');
+    return h>0 ? `${pad(h)}:${pad(m%60)}:${pad(s%60)}` : `${pad(m)}:${pad(s%60)}`;
+  }
+  function fmtSize(bytes){
+    if(bytes<1024) return bytes+' B';
+    if(bytes<1048576) return (bytes/1024).toFixed(1)+' KB';
+    return (bytes/1048576).toFixed(1)+' MB';
+  }
+  function fmtDate(ts){
+    const d=new Date(ts);
+    const p=n=>String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+
+  function setState(s){
+    const recording = s==='recording';
+    btnStart.style.display = recording?'none':'';
+    btnStop.style.display = recording?'':'none';
+    btnStop.disabled = !recording;
+    btnPreview.disabled = !recording;
+    recBadge.style.display = recording?'flex':'none';
+    timerBadge.style.display = recording?'flex':'none';
+  }
+
+  function pickMime(){
+    const c=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+    for(const t of c){ if(window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t; }
+    return 'video/webm';
+  }
+
+  async function startRec(){
+    const fps = parseInt($('fps').value,10);
+    const qualityMap = {high: 8000000, medium: 4500000, low: 2000000};
+    const wantAudio = sysAudio.checked;
+
+    let displayStream;
+    try{
+      displayStream = await navigator.mediaDevices.getDisplayMedia({
+        video: { frameRate: { ideal: fps, max: fps } },
+        audio: wantAudio ? { echoCancellation:false, noiseSuppression:false } : false
+      });
+    }catch(e){
+      if(e && (e.name==='NotAllowedError'||e.name==='AbortError')){
+        toast('已取消选择，未开始录制'); return;
+      }
+      toast('无法获取屏幕画面：'+ (e && e.message ? e.message : '浏览器不支持'));
+      return;
+    }
+
+    // build track set
+    const tracks = displayStream.getVideoTracks();
+    const trackSet = { video: tracks[0], audio: [] };
+    if(displayStream.getAudioTracks().length){ trackSet.audio.push(displayStream.getAudioTracks()[0]); }
+
+    let micStream=null;
+    if(micAudio.checked){
+      try{
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if(micStream.getAudioTracks().length){ trackSet.audio.push(micStream.getAudioTracks()[0]); }
+      }catch(_){ /* mic denied -> continue with system audio only */ }
+    }
+
+    const merged = new MediaStream();
+    merged.addTrack(trackSet.video);
+    trackSet.audio.forEach(t=>merged.addTrack(t));
+    stream = merged;
+
+    // attach to preview
+    video.srcObject = stream; video.style.display='';
+    placeholder.style.display='none';
+    try{ await video.play(); }catch(_){}
+
+    chunks=[];
+    const mime = pickMime();
+    recorder = new MediaRecorder(merged, { mimeType: mime, videoBitsPerSecond: qualityMap[$('quality').value]||4500000 });
+    recorder.ondataavailable = e=>{ if(e.data && e.data.size) chunks.push(e.data); };
+    recorder.onstop = ()=>finishRec();
+    recorder.start(250);
+
+    recStart = Date.now();
+    timerText.textContent='00:00';
+    timerInt = setInterval(()=>{ timerText.textContent = fmtTime(Date.now()-recStart); },1000);
+    setState('recording');
+    toast('录制已开始');
+
+    // if user ends screen share in browser UI
+    trackSet.video.addEventListener('ended', ()=>{
+      if(recorder && recorder.state!=='inactive'){ recorder.stop(); }
+    });
+  }
+
+  function stopRec(){
+    if(recorder && recorder.state!=='inactive'){ recorder.stop(); }
+    else finishRec();
+  }
+
+  function finishRec(){
+    clearInterval(timerInt);
+    const secs = Math.max(1, Math.round((Date.now()-recStart)/1000));
+    const blob = new Blob(chunks, { type: pickMime().split(';')[0] });
+    chunks=[];
+
+    // stop all tracks
+    if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+
+    lastBlob = blob;
+    seq++;
+    const name = '录制_' + fmtDate(Date.now()).replace(/[-: ]/g,'').slice(0,12) + '_' + seq;
+    lastMeta = {
+      name, blob, secs,
+      vw: video.videoWidth||0, vh: video.videoHeight||0,
+      size: blob.size, ts: Date.now()
+    };
+
+    // reset preview
+    video.pause(); video.srcObject=null; video.style.display='none';
+    placeholder.style.display='';
+    setState('idle');
+
+    // stop button hidden
+    if(blob.size < 1024){
+      toast('录制的视频为空，未保存'); return;
+    }
+
+    // show result bar
+    result.style.display='flex';
+    resName.textContent = name;
+    resMeta.textContent = `时长 ${fmtTime(secs*1000)} · ${fmtSize(blob.size)}` + (lastMeta.vw?` · ${lastMeta.vw}×${lastMeta.vh}`:'');
+    btnDownload.onclick = ()=>downloadBlob(lastMeta);
+
+    pushHistory(lastMeta);
+    toast('录制完成');
+  }
+
+  function downloadBlob(item){
+    const a=document.createElement('a');
+    a.href = URL.createObjectURL(item.blob);
+    a.download = item.name + '.webm';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+    toast('正在下载 ' + item.name + '.webm');
+  }
+
+  function pushHistory(item){
+    history.unshift(item);
+    renderHistory();
+  }
+
+  function renderHistory(){
+    if(!history.length){ return; }
+    if(hlist.querySelector('.empty')){ hlist.innerHTML=''; }
+    // keep UI light: render top N, drop blob refs to avoid memory
+    while(hlist.children.length < history.length && hlist.children.length < 5){
+      const it = history[hlist.children.length];
+      const row = document.createElement('div'); row.className='hrow';
+      const thumb = document.createElement('div'); thumb.className='thumb';
+      thumb.style.display='grid'; thumb.style.placeItems='center';
+      thumb.style.background='#0a0f1c'; thumb.style.border='1px solid var(--line)';
+      thumb.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#3fd0a6" stroke-width="1.4"/><circle cx="12" cy="12" r="3.6" fill="#ff4d5e"/></svg>';
+      const meta = document.createElement('div'); meta.className='meta';
+      const name = document.createElement('div'); name.className='name'; name.textContent=it.name;
+      const dims = document.createElement('div'); dims.className='dims';
+      dims.textContent = `时长 ${fmtTime(it.secs*1000)} · ${fmtSize(it.size)}${it.vw?` · ${it.vw}×${it.vh}`:''} · ${fmtDate(it.ts)}`;
+      meta.appendChild(name); meta.appendChild(dims);
+      const dlink = document.createElement('div'); dlink.className='dlink';
+      const a = document.createElement('a'); a.className='btn small'; a.href='#'; a.textContent='下载';
+      a.addEventListener('click', e=>{ e.preventDefault(); downloadBlob(it); });
+      dlink.appendChild(a);
+      row.appendChild(thumb); row.appendChild(meta); row.appendChild(dlink);
+      hlist.appendChild(row);
+    }
+  }
+
+  btnStart.addEventListener('click', startRec);
+  btnStop.addEventListener('click', stopRec);
+  btnPreview.addEventListener('click', ()=>{
+    // toggle mute while recording preview
+    if(video.srcObject){
+      const m = video.muted; video.muted=!m;
+      toast(m?'已开启声音预览':'已静音预览');
+    }
+  });
+  btnNew.addEventListener('click', ()=>{
+    result.style.display='none'; lastBlob=null;
+  });
+
+  setState('idle');
+})();
+</script>
+</body>
+</html>
